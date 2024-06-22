@@ -5,14 +5,12 @@ WeightSensor::WeightSensor(int dout, int clk, float calibrationFactor)
   : doutPin(dout), clkPin(clk), calibrationFactor(calibrationFactor) {}
 
 void WeightSensor::begin() {
-  // Serial.println("Initializing HX711...");
   hx711.begin(doutPin, clkPin);
 
   if (!hx711.is_ready()) {
     Serial.println("HX711 not found.");
     while (1); // Stay here if the sensor is not found
   }
-  // Serial.println("HX711 is ready.");
 
   hx711.set_scale(calibrationFactor);
   Serial.println("Taring the scale...");

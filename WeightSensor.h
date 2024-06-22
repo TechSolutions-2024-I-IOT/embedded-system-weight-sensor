@@ -9,7 +9,6 @@ class WeightSensor {
     const float calibrationFactor;
     const int doutPin;
     const int clkPin;
-
   public:
     WeightSensor(int dout, int clk, float calibrationFactor);
     void begin();

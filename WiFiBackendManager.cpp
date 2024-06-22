@@ -17,16 +17,12 @@ void WiFiBackendManager::connectWifi() {
   Serial.println(WiFi.localIP());
 }
 
-void WiFiBackendManager::connectBackend() {
-  client_http.begin(backendUrl); // Specify the URL
-  client_http.addHeader("Content-Type", "application/json"); // Add header for JSON
-}
-
 void WiFiBackendManager::sendData(int occupiedCount) {
-  // Prepare JSON data
   String jsonData = "{\"occupied_seats\":" + String(occupiedCount) + "}";
 
-  // Send HTTP POST request
+  client_http.begin(backendUrl);
+  client_http.addHeader("Content-Type", "application/json");
+
   int httpCode = client_http.POST(jsonData);
 
   if (httpCode > 0) {
@@ -36,4 +32,6 @@ void WiFiBackendManager::sendData(int occupiedCount) {
   } else {
     Serial.println("Error sending data to backend");
   }
+
+  client_http.end();
 }

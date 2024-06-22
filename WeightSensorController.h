@@ -13,6 +13,8 @@ class WeightSensorController {
     ~WeightSensorController();
     void begin();
     int checkSensors();
+    int getNumSensors() const;
+    WeightSensor** getSensors() const;
 };
 
 #endif

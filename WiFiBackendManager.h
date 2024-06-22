@@ -14,7 +14,6 @@ class WiFiBackendManager {
   public:
     WiFiBackendManager(const char* ssid, const char* password, const char* backendUrl);
     void connectWifi();
-    void connectBackend();
     void sendData(int occupiedCount);
 };
 

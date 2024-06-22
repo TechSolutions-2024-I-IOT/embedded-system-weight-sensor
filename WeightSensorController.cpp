@@ -1,12 +1,12 @@
 #include "WeightSensorController.h"
 #include <Arduino.h>
 
-WeightSensorController::WeightSensorController(int numSensors, const int* doutPins, const int* clkPins, float calibrationFactor) {
-  this->numSensors = numSensors;
-  sensors = new WeightSensor*[numSensors];
-  for (int i = 0; i < numSensors; ++i) {
-    sensors[i] = new WeightSensor(doutPins[i], clkPins[i], calibrationFactor);
-  }
+WeightSensorController::WeightSensorController(int numSensors, const int* doutPins, const int* clkPins, float calibrationFactor)
+  : numSensors(numSensors) {
+    sensors = new WeightSensor*[numSensors];
+    for (int i = 0; i < numSensors; ++i) {
+      sensors[i] = new WeightSensor(doutPins[i], clkPins[i], calibrationFactor);
+    }
 }
 
 WeightSensorController::~WeightSensorController() {
@@ -17,7 +17,12 @@ WeightSensorController::~WeightSensorController() {
 }
 
 void WeightSensorController::begin() {
+  Serial.println("Starting weight sensors");
+
   for (int i = 0; i < numSensors; ++i) {
+    Serial.print("Weight sensor ");
+    Serial.print(i + 1);
+    Serial.println("configuration");
     sensors[i]->begin();
   }
 }
@@ -29,7 +34,7 @@ int WeightSensorController::checkSensors() {
     float reading = sensors[i]->getWeight();
     Serial.print("Weight sensor ");
     Serial.print(i + 1);
-    Serial.print(": ");
+    Serial.print(" : ");
     Serial.print(reading, 2); // Imprimir con 2 decimales
 
     if (reading > 15.0) {
@@ -44,4 +49,12 @@ int WeightSensorController::checkSensors() {
   Serial.println(occupiedCount);
 
   return occupiedCount;
+}
+
+int WeightSensorController::getNumSensors() const {
+    return numSensors;
+}
+
+WeightSensor** WeightSensorController::getSensors() const {
+    return sensors;
 }
